@@ -5,6 +5,7 @@
 
 #include "i2cmaster.h"
 #include "BMP180\BMP180.h"
+
 // LCD interface (should agree with the diagram above)
 //   make sure that the LCD RW pin is connected to GND
 #define lcd_D7_port     PORTD                   // lcd D7 connection
@@ -52,7 +53,6 @@ void lcd_write_character_4d(uint8_t);
 void lcd_write_string_4d(uint8_t *);
 void lcd_init_4d(void);
 
-/******************************* Main Program Code *************************/
 int main(void)
 {
 // configure the microprocessor pins for the data lines
@@ -92,12 +92,12 @@ int main(void)
 		lcd_write_instruction_4d(lcd_SetCursor | lcd_LineOne);
 		sprintf((char*)lineData, "%d(F), %d(C)", farenheit, celsius);
 		lcd_write_string_4d(lineData);
+		
 		lcd_write_instruction_4d(lcd_SetCursor | lcd_LineTwo);
 		_delay_us(50);
-		sprintf((char*)linetwo, "(UP)%ld", pressure);
+		sprintf((char*)linetwo, "%ld Pa", pressure);
 		lcd_write_string_4d(linetwo);
-		_delay_ms(100);
-		
+		_delay_ms(500);
 		
 	}
     return 0;

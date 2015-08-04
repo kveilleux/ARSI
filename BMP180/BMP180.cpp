@@ -25,7 +25,8 @@ void BMP180::Setup()
 int32_t BMP180::BMP180_GetPressure()
 {
 	BMP180_ReadUCTemperature();
-	int UCPressure = BMP180_ReadUCPressure();
+	UCPressure = BMP180_ReadUCPressure();
+	
 	long pressure = 0;
 
 	long B6 =	(long)B5 - 4000;
@@ -74,7 +75,7 @@ int32_t BMP180::BMP180_ReadUCPressure()
 {
 	i2c_start_wait(DevBMPWrite);
 	i2c_write(0xF4);
-	i2c_write(0xF6 + (oversampling_setting << 6));
+	i2c_write(0x34 + (oversampling_setting << 6));
 	i2c_stop();
 
 	// Wait some time for the pressure to read

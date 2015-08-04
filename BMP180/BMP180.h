@@ -29,14 +29,14 @@ class BMP180
 	int16_t	MB;
 	int16_t MC;
 	int16_t MD;
-	//int16_t calibData[11];
+	
 	short	oversampling_setting;
 
 	float oss_delay[4];
 
 	// Uncompensated temperature value from the BMP180 Sensor
-	int UCTemp;
-	int UCPressure;
+	int32_t UCTemp;
+	int32_t UCPressure;
 
 	long B5;
 
@@ -59,6 +59,8 @@ public:
 	
 	// Initial setup that must be called... talks to the BMP180 sensor to get calibration data
 	void Setup();
+	
+
 };
 
 #endif
