@@ -11,7 +11,7 @@
 
 void BMP180::Setup()
 {
-	oversampling_setting = 0;
+	oversampling_setting = 2;
 
 	// We need a longer delay based on the OSS chosen above for more readings
 	oss_delay[0] = 4.5f;

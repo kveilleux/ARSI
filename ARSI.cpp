@@ -5,7 +5,7 @@
 
 #include "i2cmaster.h"
 #include "BMP180\BMP180.h"
-
+#include "BNO055\BNO055.h"
 // LCD interface (should agree with the diagram above)
 //   make sure that the LCD RW pin is connected to GND
 #define lcd_D7_port     PORTD                   // lcd D7 connection
@@ -76,12 +76,30 @@ int main(void)
 	BMP180 bmp180;
 	bmp180.Setup();
 
+	BNO055 bno055;
+	bno055.Setup();
+		
 // endless loop
     while(1)
 	{
+		volatile int32_t heading, roll, pitch =0;
+		bno055.ReadEulerOrientation(heading, roll, pitch);
+		
+		lcd_write_instruction_4d(lcd_Clear | lcd_Home);
+		_delay_us(500);
+		lcd_write_instruction_4d(lcd_SetCursor | lcd_LineOne);
+		sprintf((char*)lineData, "Heading:%ld", heading);
+		lcd_write_string_4d(lineData);
+		
+		lcd_write_instruction_4d(lcd_SetCursor | lcd_LineTwo);
+		_delay_us(50);
+		sprintf((char*)linetwo, "Roll:%ld", roll);
+		lcd_write_string_4d(linetwo);
+		_delay_ms(500);
+		
 		//BMP180_GetCalibrationData(calibData);
 		//int UCTemp = BMP180_GetUCTemperature();
-		int temp = bmp180.BMP180_GetTemperature();
+		/*int temp = bmp180.BMP180_GetTemperature();
 		int32_t pressure = bmp180.BMP180_GetPressure();
 		float fC = temp * 0.1f;
 		float fF = (fC * 1.8) + 32;
@@ -97,7 +115,7 @@ int main(void)
 		_delay_us(50);
 		sprintf((char*)linetwo, "%ld Pa", pressure);
 		lcd_write_string_4d(linetwo);
-		_delay_ms(500);
+		_delay_ms(500);*/
 		
 	}
     return 0;
